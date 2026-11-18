@@ -1,4 +1,11 @@
-import { FlatList, Pressable, Text, TextInput, View } from 'react-native';
+import {
+    Alert,
+    FlatList,
+    Pressable,
+    Text,
+    TextInput,
+    View,
+} from 'react-native';
 import { useState } from 'react';
 import { colors, styles } from '../consts';
 import { useHabits } from '../context/HabitsContext';
@@ -38,7 +45,16 @@ export default function ManageHabits() {
                                 styles.rectangle,
                                 { backgroundColor: colors.love },
                             ]}
-                            onPress={() => removeHabit(item.id)}
+                            onPress={() =>
+                                Alert.alert('Delete activity?', item.name, [
+                                    { text: 'Cancel', style: 'cancel' },
+                                    {
+                                        text: 'Delete',
+                                        style: 'destructive',
+                                        onPress: () => removeHabit(item.id),
+                                    },
+                                ])
+                            }
                         >
                             <Text style={styles.buttonText}>x</Text>
                         </Pressable>
