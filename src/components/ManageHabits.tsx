@@ -1,26 +1,18 @@
-import { Text, View, FlatList, Pressable, TextInput } from 'react-native';
+import { FlatList, Pressable, Text, TextInput, View } from 'react-native';
 import { useState } from 'react';
-import { colors, data, styles } from '../consts';
+import { colors, styles } from '../consts';
+import { useHabits } from '../context/HabitsContext';
 
 export default function ManageHabits() {
-    const [isAddingHabit, setIsAddingHabit] = useState(false);
-    const [habits, setHabits] = useState(data);
+    const { habits, addHabit, removeHabit } = useHabits();
+    const [isAdding, setIsAdding] = useState(false);
     const [text, setText] = useState('');
 
     function onAdd() {
-        if (text.trim().length === 0) {
-            return;
-        }
-        setHabits([
-            ...habits,
-            { id: habits.length + 1, name: text, isDone: false },
-        ]);
+        if (!text.trim()) return;
+        addHabit(text);
         setText('');
-        setIsAddingHabit(false);
-    }
-
-    function onRemove(id: number) {
-        setHabits(habits.filter((item) => item.id !== id));
+        setIsAdding(false);
     }
 
     return (
@@ -29,7 +21,7 @@ export default function ManageHabits() {
                 <Text style={styles.title}>Your Activities</Text>
                 <Pressable
                     style={[styles.rectangle, { backgroundColor: colors.moss }]}
-                    onPress={() => setIsAddingHabit(!isAddingHabit)}
+                    onPress={() => setIsAdding(!isAdding)}
                 >
                     <Text style={styles.buttonText}>+</Text>
                 </Pressable>
@@ -46,18 +38,19 @@ export default function ManageHabits() {
                                 styles.rectangle,
                                 { backgroundColor: colors.love },
                             ]}
-                            onPress={() => onRemove(item.id)}
+                            onPress={() => removeHabit(item.id)}
                         >
                             <Text style={styles.buttonText}>x</Text>
                         </Pressable>
                     </View>
                 )}
             />
-            {isAddingHabit && (
+
+            {isAdding && (
                 <View style={styles.spacedRow}>
                     <TextInput
                         placeholder="Add Your Activity!"
-                        onChangeText={(newText) => setText(newText)}
+                        onChangeText={setText}
                         value={text}
                         style={styles.textInput}
                         placeholderTextColor={colors.text}
@@ -68,7 +61,10 @@ export default function ManageHabits() {
                                 styles.rectangle,
                                 { backgroundColor: colors.love },
                             ]}
-                            onPress={() => setIsAddingHabit(!isAddingHabit)}
+                            onPress={() => {
+                                setText('');
+                                setIsAdding(false);
+                            }}
                         >
                             <Text style={styles.buttonText}>x</Text>
                         </Pressable>

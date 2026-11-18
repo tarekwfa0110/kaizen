@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
 import { colors } from '../consts';
 
-export default function Carousel({ children }) {
+export default function Carousel({ children }: { children: React.ReactNode }) {
     const items = Array.isArray(children) ? children : [children];
     const [width, setWidth] = useState(0);
     const [scrollX] = useState(() => new Animated.Value(0));
