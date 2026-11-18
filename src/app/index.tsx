@@ -1,23 +1,19 @@
-import { View, Text, StyleSheet } from 'react-native';
-import { colors } from '../consts';
+import TodaysHabits from '../components/TodaysHabits';
+import ManageHabits from '../components/ManageHabits';
+import { styles } from '../consts';
+import { View } from 'react-native';
+import Carousel from '@/components/Carousel';
+import { HabitProvider } from '../context/HabitsContext';
 
 export default function Index() {
     return (
-        <View style={styles.container}>
-            <Text style={{ color: colors.text, fontSize: 20 }}>
-                we are cooking so hard rn
-            </Text>
-        </View>
+        <HabitProvider>
+            <View style={styles.projectContainer}>
+                <Carousel>
+                    <TodaysHabits />
+                    <ManageHabits />
+                </Carousel>
+            </View>
+        </HabitProvider>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        width: '100%',
-        height: '100%',
-        backgroundColor: colors.base,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-});
